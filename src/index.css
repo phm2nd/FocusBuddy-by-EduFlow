@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-plus-jakarta: "Plus Jakarta Sans", ui-sans-serif, system-ui;
+  --font-serif: Georgia, serif;
+
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  
+  --color-primary: #fbbf24; /* amber-400 */
+  --color-on-primary: #000000;
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: #000000;
+  
+  --color-error: #ef4444;
+  --color-on-error: #ffffff;
+
+  --radius-xl: 1.5rem;
+  --radius-lg: 1rem;
+}
+
+:root {
+  --surface: #0a0a0a;
+  --surface-dim: #050505;
+  --surface-bright: #0f0f0f;
+  --surface-container-lowest: #0d0d0d;
+  --surface-container-low: #121212;
+  --surface-container: #171717;
+  --surface-container-high: #1c1c1c;
+  --surface-container-highest: #222222;
+  
+  --on-surface: #f4f4f5;
+  --on-surface-variant: #71717a;
+  --inverse-surface: #f4f4f5;
+  --inverse-on-surface: #09090b;
+  --outline: #27272a;
+  --outline-variant: #3f3f46;
+
+  --primary-container: #451a03;
+  --on-primary-container: #fef3c7;
+
+  --secondary: #ffffff;
+  --on-secondary: #000000;
+  --secondary-container: rgba(255, 255, 255, 0.05);
+  --on-secondary-container: #ffffff;
+
+  --tertiary: #a1a1aa;
+  
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  --card-shadow-hover: 0 12px 24px rgba(0,0,0,0.8);
+}
+
+.light {
+  --surface: #ffffff;
+  --surface-dim: #f8fafc;
+  --surface-bright: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f1f5f9;
+  --surface-container: #e2e8f0;
+  --surface-container-high: #cbd5e1;
+  --surface-container-highest: #94a3b8;
+  
+  --on-surface: #0f172a;
+  --on-surface-variant: #475569;
+  --inverse-surface: #1e293b;
+  --inverse-on-surface: #f8fafc;
+  --outline: #e2e8f0;
+  --outline-variant: #cbd5e1;
+
+  --primary-container: #ffedd5;
+  --on-primary-container: #92400e;
+
+  --secondary: #1e293b;
+  --on-secondary: #ffffff;
+  --secondary-container: rgba(15, 23, 42, 0.05);
+  --on-secondary-container: #0f172a;
+
+  --tertiary: #64748b;
+
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-plus-jakarta antialiased transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  .card-shadow {
+    box-shadow: var(--card-shadow);
+  }
+  .card-shadow-hover {
+    box-shadow: var(--card-shadow-hover);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-serif {
+    font-family: var(--font-serif);
+  }
+  .italic-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}

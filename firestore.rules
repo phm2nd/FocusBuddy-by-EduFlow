@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // User Profile
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && isValidUser(incoming());
+
+      function isValidUser(data) {
+        return data.keys().hasAll(['displayName', 'streak', 'tasksCompleted'])
+          && data.displayName is string && data.displayName.size() <= 100
+          && data.streak is number && data.streak >= 0
+          && data.tasksCompleted is number && data.tasksCompleted >= 0;
+      }
+
+      // Tasks Subcollection
+      match /tasks/{taskId} {
+        allow list, get: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidTask(incoming());
+        allow update: if isOwner(userId) && isValidTask(incoming());
+        allow delete: if isOwner(userId);
+
+        function isValidTask(data) {
+          return data.keys().hasAll(['title', 'status'])
+            && data.title is string && data.title.size() <= 200
+            && data.status in ['pending', 'completed'];
+        }
+      }
+    }
+  }
+}

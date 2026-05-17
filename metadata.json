@@ -1,0 +1,8 @@
+{
+  "name": "FocusBuddy by Eduflow",
+  "description": "A modern, minimalist flashcard and study management app designed for focus and retention.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
