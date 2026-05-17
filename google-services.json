@@ -9,7 +9,26 @@
       "client_info": {
         "mobilesdk_app_id": "1:11238612413:android:05b184fc3ff8e84b8b46d4",
         "android_client_info": {
-          "package_name": "com.eduflow.focusbuddy"
+          "package_name": "com.PHM.FocusBuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBysD-QXnazaUMH2r07O7EHfUOn0DGh-IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11238612413:android:28f04cd499c5ef028b46d4",
+        "android_client_info": {
+          "package_name": "com.phm.focusbuddy"
         }
       },
       "oauth_client": [],
