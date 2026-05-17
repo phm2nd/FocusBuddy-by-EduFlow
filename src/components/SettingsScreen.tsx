@@ -11,7 +11,10 @@ import {
   Info,
   Trash2,
   AlertTriangle,
-  X
+  X,
+  Smartphone,
+  Tablet,
+  Touchpad
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useUser } from '../contexts/UserContext';
@@ -20,7 +23,15 @@ import { AnimatePresence } from 'motion/react';
 
 export const SettingsScreen = () => {
   const { theme, setTheme } = useTheme();
-  const { logout, language, setLanguage, notificationsEnabled, setNotificationsEnabled, resetProgress, t } = useUser();
+  const { 
+    user, login, logout, language, setLanguage, 
+    notificationsEnabled, setNotificationsEnabled, 
+    mobileOptimized, setMobileOptimized,
+    tabletMode, setTabletMode,
+    hapticsEnabled, setHapticsEnabled,
+    resetProgress, t 
+  } = useUser();
+  const isNarrow = mobileOptimized || tabletMode;
   const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
 
   const languages: { id: Language; label: string }[] = [
@@ -68,6 +79,28 @@ export const SettingsScreen = () => {
       ]
     },
     {
+      title: "Identity & Sync",
+      description: "Secure your progress across all your neural nodes.",
+      items: [
+        { 
+          icon: <Globe className="w-4 h-4" />, 
+          label: "Google Account", 
+          action: (
+            <button 
+              onClick={user ? logout : login}
+              className={`px-6 py-2 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all border ${
+                user 
+                  ? 'bg-surface-container text-on-surface-variant border-outline-variant/30 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/20' 
+                  : 'bg-primary text-on-primary border-primary hover:opacity-90'
+              }`}
+            >
+              {user ? t('disconnectSession') : "Connect Google"}
+            </button>
+          )
+        },
+      ]
+    },
+    {
       title: t('synchronization'),
       description: "Manage how information reaches your awareness.",
       items: [
@@ -91,6 +124,33 @@ export const SettingsScreen = () => {
               ))}
             </select>
           )
+        },
+      ]
+    },
+    {
+      title: "Device Optimization",
+      description: "Neural interface adjustments for physical mobile hardware.",
+      items: [
+        { 
+          icon: <Smartphone className="w-4 h-4" />, 
+          label: "Mobile Viewport", 
+          description: "Optimize layout density for narrow screens.",
+          toggle: mobileOptimized,
+          onToggle: () => setMobileOptimized(!mobileOptimized)
+        },
+        { 
+          icon: <Tablet className="w-4 h-4" />, 
+          label: "Tablet Mode", 
+          description: "Expand interface for larger touch surfaces.",
+          toggle: tabletMode,
+          onToggle: () => setTabletMode(!tabletMode)
+        },
+        { 
+          icon: <Touchpad className="w-4 h-4" />, 
+          label: "Haptic Feedback", 
+          description: "Tactile response on neural triggers.",
+          toggle: hapticsEnabled,
+          onToggle: () => setHapticsEnabled(!hapticsEnabled)
         },
       ]
     },
@@ -177,8 +237,8 @@ export const SettingsScreen = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 pt-8">
-        <div className="lg:col-span-4">
+      <div className={`grid grid-cols-1 gap-16 pt-8 ${isNarrow ? '' : 'md:grid-cols-12'}`}>
+        <div className={isNarrow ? 'col-span-1' : 'md:col-span-4'}>
           <div className="sticky top-8 space-y-6">
             <div className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-[32px] space-y-6 shadow-2xl">
               <div className="flex flex-col items-center text-center gap-4">
@@ -188,19 +248,11 @@ export const SettingsScreen = () => {
                 <h4 className="text-xl italic-serif text-on-surface">{t('systemStatus')}</h4>
                 <p className="text-[10px] text-on-surface-variant uppercase tracking-widest leading-relaxed font-medium">Build 2.4.0-Beta<br/>{t('neuralLinkOptimized')}</p>
               </div>
-              <div className="h-[1px] bg-outline-variant/30" />
-              <button 
-                onClick={logout}
-                className="w-full flex items-center justify-center gap-3 py-4 text-red-500 border border-red-500/10 rounded-xl hover:bg-red-500/5 transition-all text-[10px] font-bold uppercase tracking-[0.2em]"
-              >
-                <LogOut className="w-4 h-4" />
-                {t('disconnectSession')}
-              </button>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-8 space-y-12">
+        <div className={isNarrow ? 'col-span-1 space-y-12' : 'md:col-span-8 space-y-12'}>
           {sections.map((section, idx) => (
             <div key={idx} className="space-y-6">
               <div className="flex items-center gap-4">
@@ -211,15 +263,20 @@ export const SettingsScreen = () => {
               
               <div className="bg-surface-container-low border border-outline-variant/30 rounded-[32px] overflow-hidden shadow-xl">
                  {section.items.map((item, i) => (
-                   <div key={i} className={`flex items-center justify-between p-7 hover:bg-surface-container transition-all ${i !== section.items.length - 1 ? 'border-b border-outline-variant/10' : ''}`}>
-                      <div className="flex items-center gap-6">
-                        <div className={`p-4 rounded-2xl bg-surface border border-outline-variant/30 text-zinc-600`}>
+                   <div key={i} className={`flex flex-col sm:flex-row sm:items-center justify-between p-5 md:p-7 hover:bg-surface-container transition-all ${i !== section.items.length - 1 ? 'border-b border-outline-variant/10' : ''} gap-4`}>
+                      <div className="flex items-center gap-4 md:gap-6">
+                        <div className={`p-3 md:p-4 rounded-2xl bg-surface border border-outline-variant/30 text-zinc-600 shrink-0`}>
                           {item.icon}
                         </div>
-                        <span className="text-sm font-medium text-on-surface-variant uppercase tracking-widest">{item.label}</span>
+                        <div className="flex flex-col">
+                          <span className="text-xs md:text-sm font-medium text-on-surface-variant uppercase tracking-widest">{item.label}</span>
+                          {item.description && (
+                            <p className="text-[10px] text-zinc-500 mt-1 max-w-sm leading-relaxed">{item.description}</p>
+                          )}
+                        </div>
                       </div>
                       
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center justify-end gap-4 ml-14 sm:ml-0">
                          {item.action && item.action}
                          {item.toggle !== undefined && (
                            <button 

@@ -44,6 +44,12 @@ interface UserContextType {
   setLanguage: (l: Language) => void;
   notificationsEnabled: boolean;
   setNotificationsEnabled: (v: boolean) => void;
+  mobileOptimized: boolean;
+  setMobileOptimized: (v: boolean) => void;
+  tabletMode: boolean;
+  setTabletMode: (v: boolean) => void;
+  hapticsEnabled: boolean;
+  setHapticsEnabled: (v: boolean) => void;
   resetProgress: () => Promise<void>;
   t: (key: string) => string;
 }
@@ -65,6 +71,25 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
   const [notificationsEnabled, setNotificationsEnabled] = useState(() => {
     return localStorage.getItem('notificationsEnabled') !== 'false';
+  });
+  const [mobileOptimized, setMobileOptimizedState] = useState(() => {
+    return localStorage.getItem('mobileOptimized') === 'true';
+  });
+  const [tabletMode, setTabletModeState] = useState(() => {
+    return localStorage.getItem('tabletMode') === 'true';
+  });
+
+  const setMobileOptimized = (v: boolean) => {
+    setMobileOptimizedState(v);
+    if (v) setTabletModeState(false);
+  };
+
+  const setTabletMode = (v: boolean) => {
+    setTabletModeState(v);
+    if (v) setMobileOptimizedState(false);
+  };
+  const [hapticsEnabled, setHapticsEnabled] = useState(() => {
+    return localStorage.getItem('hapticsEnabled') !== 'false';
   });
 
   const t = (key: string) => {
@@ -88,6 +113,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setFocus(localStorage.getItem('userFocus') || 'Computer Science');
         setLanguage((localStorage.getItem('language') as Language) || 'en');
         setNotificationsEnabled(localStorage.getItem('notificationsEnabled') !== 'false');
+        setMobileOptimized(localStorage.getItem('mobileOptimized') === 'true');
+        setTabletMode(localStorage.getItem('tabletMode') === 'true');
+        setHapticsEnabled(localStorage.getItem('hapticsEnabled') !== 'false');
       }
     });
     return unsubscribe;
@@ -109,6 +137,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setFocus(data.focus || 'Computer Science');
         if (data.language) setLanguage(data.language);
         if (data.notificationsEnabled !== undefined) setNotificationsEnabled(data.notificationsEnabled);
+        if (data.mobileOptimized !== undefined) setMobileOptimized(data.mobileOptimized);
+        if (data.tabletMode !== undefined) setTabletMode(data.tabletMode);
+        if (data.hapticsEnabled !== undefined) setHapticsEnabled(data.hapticsEnabled);
       } else {
         // Initialize user in Firestore if they don't exist
         setDoc(userRef, {
@@ -120,6 +151,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           focus: 'Computer Science',
           language: 'en',
           notificationsEnabled: true,
+          mobileOptimized: false,
+          tabletMode: false,
+          hapticsEnabled: true,
           updatedAt: new Date().toISOString()
         });
       }
@@ -132,11 +166,30 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return unsubscribe;
   }, [user]);
 
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   const login = async () => {
+    if (isAuthenticating) return;
+    setIsAuthenticating(true);
     try {
       await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login failed:", error);
+      let message = t('loginError');
+      
+      if (error.code === 'auth/unauthorized-domain') {
+        const domain = window.location.hostname;
+        message = `Unauthorized domain: ${domain}. To fix this, please go to your Firebase Console > Authentication > Settings > Authorized domains, and add "${domain}" to the list.`;
+      } else if (error.code === 'auth/popup-blocked') {
+        message = "Popup blocked. Please allow popups for this site.";
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        setIsAuthenticating(false);
+        return; 
+      }
+      
+      alert(message);
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
@@ -205,6 +258,27 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [notificationsEnabled, user]);
 
+  useEffect(() => {
+    localStorage.setItem('mobileOptimized', mobileOptimized.toString());
+    if (user) {
+      updateDoc(doc(db, 'users', user.uid), { mobileOptimized, updatedAt: new Date().toISOString() }).catch(() => {});
+    }
+  }, [mobileOptimized, user]);
+
+  useEffect(() => {
+    localStorage.setItem('tabletMode', tabletMode.toString());
+    if (user) {
+      updateDoc(doc(db, 'users', user.uid), { tabletMode, updatedAt: new Date().toISOString() }).catch(() => {});
+    }
+  }, [tabletMode, user]);
+
+  useEffect(() => {
+    localStorage.setItem('hapticsEnabled', hapticsEnabled.toString());
+    if (user) {
+      updateDoc(doc(db, 'users', user.uid), { hapticsEnabled, updatedAt: new Date().toISOString() }).catch(() => {});
+    }
+  }, [hapticsEnabled, user]);
+
   const resetProgress = async () => {
     if (!user) {
       setStreak(0);
@@ -256,6 +330,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       activeTab, setActiveTab,
       language, setLanguage,
       notificationsEnabled, setNotificationsEnabled,
+      mobileOptimized, setMobileOptimized,
+      tabletMode, setTabletMode,
+      hapticsEnabled, setHapticsEnabled,
       resetProgress,
       t
     }}>

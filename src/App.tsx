@@ -12,7 +12,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider, useUser } from './contexts/UserContext';
 
 function AppContent() {
-  const { activeTab, setActiveTab } = useUser();
+  const { activeTab, setActiveTab, mobileOptimized, tabletMode } = useUser();
   
   const renderScreen = () => {
     switch (activeTab) {
@@ -35,14 +35,20 @@ function AppContent() {
     }
   };
 
+  const getContainerClass = () => {
+    if (mobileOptimized) return "max-w-[480px]";
+    if (tabletMode) return "max-w-[820px]";
+    return "max-w-[1400px]";
+  };
+
   return (
-    <div className="min-h-screen bg-surface flex flex-col selection:bg-primary/30 selection:text-primary transition-colors">
+    <div className="min-h-screen bg-surface flex flex-col selection:bg-primary/30 selection:text-primary transition-colors overflow-x-hidden">
       <TopAppBar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab}
       />
       
-      <main className="flex-grow max-w-[1400px] mx-auto w-full px-6 pt-12">
+      <main className={`flex-grow mx-auto w-full px-4 md:px-6 pt-12 transition-all duration-500 ease-in-out ${getContainerClass()}`}>
         <AnimatePresence mode="wait">
           {renderScreen()}
         </AnimatePresence>

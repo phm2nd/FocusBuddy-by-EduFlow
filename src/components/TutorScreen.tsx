@@ -60,7 +60,7 @@ export const TutorScreen = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="max-w-4xl mx-auto flex flex-col h-[75vh]"
+      className="max-w-4xl mx-auto flex flex-col h-[70vh] md:h-[75vh]"
     >
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-8">
         <div>

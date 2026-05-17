@@ -55,7 +55,8 @@ const initialEvents: Event[] = [
 ];
 
 export const ScheduleScreen = () => {
-  const { t } = useUser();
+  const { t, mobileOptimized, tabletMode } = useUser();
+  const isNarrow = mobileOptimized || tabletMode;
   const [events, setEvents] = useState<Event[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -161,9 +162,9 @@ export const ScheduleScreen = () => {
       </div>
 
       {/* Vertical Timeline View */}
-      <div className="relative max-w-4xl mx-auto pl-8 md:pl-24 pt-8">
+      <div className={`relative max-w-4xl mx-auto pt-8 ${isNarrow ? 'pl-16' : 'pl-8 md:pl-24'}`}>
         {/* Timeline Line */}
-        <div className="absolute left-[38px] md:left-[82px] top-4 bottom-0 w-[1px] bg-outline-variant/30" />
+        <div className={`absolute top-4 bottom-0 w-[1px] bg-outline-variant/30 ${isNarrow ? 'left-[46px]' : 'left-[38px] md:left-[82px]'}`} />
 
         <div className="flex flex-col gap-12">
           {events.length === 0 && (
@@ -175,11 +176,11 @@ export const ScheduleScreen = () => {
           {events.map((event) => {
             return (
               <div key={event.id} className="relative flex group items-start">
-                <div className="absolute -left-[38px] md:-left-[82px] w-12 md:w-16 text-right pr-4 md:pr-6 pt-1">
+                <div className={`absolute pt-1 text-right ${isNarrow ? '-left-16 w-12 pr-4' : '-left-[38px] md:-left-[82px] w-12 md:w-16 pr-4 md:pr-6'}`}>
                   <span className="text-[10px] font-medium text-on-surface-variant uppercase tracking-widest leading-none">{event.time}</span>
                 </div>
 
-                <div className="absolute -left-[3px] top-2.5 w-1.5 h-1.5 rounded-full bg-surface border border-outline-variant group-hover:bg-primary transition-colors shadow-2xl z-10" />
+                <div className={`absolute top-2.5 w-1.5 h-1.5 rounded-full bg-surface border border-outline-variant group-hover:bg-primary transition-colors shadow-2xl z-10 ${isNarrow ? 'left-[11px]' : '-left-[3px]'}`} />
 
                 <div className="flex-grow pl-8 md:pl-0">
                   {event.isStudyBlock ? (

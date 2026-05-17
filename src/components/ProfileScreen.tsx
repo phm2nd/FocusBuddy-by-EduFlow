@@ -17,8 +17,16 @@ import { useUser } from '../contexts/UserContext';
 import { useTheme } from '../contexts/ThemeContext';
 
 export const ProfileScreen = () => {
-  const { displayName, setDisplayName, emoji, setEmoji, streak, occupation, setOccupation, focus, setFocus, t } = useUser();
+  const { 
+    user, displayName, setDisplayName, 
+    emoji, setEmoji, streak, 
+    occupation, setOccupation, 
+    focus, setFocus, 
+    mobileOptimized, tabletMode,
+    t 
+  } = useUser();
   const { theme, setTheme } = useTheme();
+  const isNarrow = mobileOptimized || tabletMode;
   
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(displayName);
@@ -56,9 +64,9 @@ export const ProfileScreen = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div className={`grid grid-cols-1 gap-12 ${isNarrow ? '' : 'md:grid-cols-12'}`}>
         {/* Profile Card */}
-        <div className="lg:col-span-8 bg-surface-container-low/50 border border-outline-variant/30 rounded-[32px] p-10 card-shadow relative overflow-hidden flex flex-col md:flex-row items-center md:items-start gap-12 group backdrop-blur-xl">
+        <div className={`${isNarrow ? 'md:col-span-1' : 'md:col-span-8'} bg-surface-container-low/50 border border-outline-variant/30 rounded-[32px] p-10 card-shadow relative overflow-hidden flex flex-col md:flex-row items-center md:items-start gap-12 group backdrop-blur-xl`}>
           <div className="absolute -right-20 -top-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px] opacity-10 pointer-events-none group-hover:opacity-20 transition-all" />
           
           <div className="relative group/avatar">
@@ -114,21 +122,24 @@ export const ProfileScreen = () => {
               </div>
             ) : (
               <>
-                <h3 className="text-5xl italic-serif text-on-surface mb-2 leading-none">{displayName}</h3>
+                <h3 className={`italic-serif text-on-surface mb-2 leading-none ${isNarrow ? 'text-3xl' : 'text-5xl'}`}>{displayName}</h3>
                 <p className="text-on-surface-variant italic-serif text-lg py-2 mb-8 border-b border-outline-variant/10 w-full">{occupation} · {focus}</p>
               </>
             )}
             
-            <div className="grid grid-cols-2 gap-8 w-full mt-auto">
+            <div className={`grid gap-8 w-full mt-auto ${isNarrow ? 'grid-cols-1' : 'grid-cols-2'}`}>
                <div className="p-6 rounded-2xl bg-surface-container/30 border border-outline-variant/10">
                   <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Member Since</div>
-                  <div className="text-sm font-medium text-on-surface-variant">May 2024</div>
+                  <div className="text-sm font-medium text-on-surface-variant">
+                    {user?.metadata.creationTime 
+                      ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                      : new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                  </div>
                </div>
                <div className="p-6 rounded-2xl bg-surface-container/30 border border-outline-variant/10">
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Status</div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                    <div className="text-sm font-medium text-on-surface-variant">Premium</div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Interface Focus</div>
+                  <div className="text-sm font-medium text-on-surface-variant">
+                    {mobileOptimized ? "Mobile Terminal" : tabletMode ? "Tablet Logic" : "Desktop Node"}
                   </div>
                </div>
             </div>
@@ -136,7 +147,7 @@ export const ProfileScreen = () => {
         </div>
 
         {/* Stats Column */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
+        <div className={`${isNarrow ? 'md:col-span-1' : 'md:col-span-4'} flex flex-col gap-6`}>
           <div className="bg-surface-container-low/50 border border-outline-variant/30 rounded-3xl p-8 card-shadow flex items-center gap-6 group hover:bg-surface-container transition-all">
             <div className="w-12 h-12 rounded-full border border-outline-variant/30 flex items-center justify-center text-zinc-600 group-hover:text-primary transition-colors"><Clock className="w-5 h-5" /></div>
             <div>

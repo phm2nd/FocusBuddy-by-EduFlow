@@ -14,7 +14,8 @@ import {
 import { useUser } from '../contexts/UserContext';
 
 export const DashboardScreen = () => {
-  const { displayName, streak, tasksCompleted, setActiveTab, t } = useUser();
+  const { displayName, streak, tasksCompleted, setActiveTab, t, mobileOptimized, tabletMode } = useUser();
+  const isNarrow = mobileOptimized || tabletMode;
 
   const firstName = displayName.split(' ')[0];
 
@@ -26,7 +27,7 @@ export const DashboardScreen = () => {
       className="pb-32 space-y-12"
     >
       {/* Editorial Hero Section */}
-      <section className="h-[280px] md:h-[360px] relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-2xl flex items-end group">
+      <section className={`h-[280px] md:h-[360px] relative rounded-[32px] md:rounded-[40px] overflow-hidden shadow-2xl flex items-end group ${isNarrow ? 'md:h-[300px]' : ''}`}>
         <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent z-10"></div>
         {/* Abstract Background Gradient */}
         <div className="absolute inset-0 bg-surface-container-low">
@@ -38,18 +39,20 @@ export const DashboardScreen = () => {
         <div className="relative z-20 p-6 md:p-10 flex justify-between items-end w-full">
           <div className="max-w-xl">
             <div className="text-[10px] uppercase tracking-[0.4em] text-primary mb-3">Today's Focus</div>
-            <h2 className="text-4xl md:text-6xl italic-serif leading-[1.1] text-on-surface underline decoration-primary/30 underline-offset-8">Hello, {firstName}.</h2>
+            <h2 className={`md:text-6xl italic-serif leading-[1.1] text-on-surface underline decoration-primary/30 underline-offset-8 ${isNarrow ? 'text-3xl' : 'text-4xl'}`}>Hello, {firstName}.</h2>
             <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed font-light mt-4 md:mt-6 max-w-sm">Ready to learn something new? You're doing great so far!</p>
           </div>
-          <div className="hidden md:flex flex-col items-end">
-             <div className="text-[40px] italic-serif text-on-surface/90">{(tasksCompleted * 10) % 100}%</div>
-             <div className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">Progress</div>
-          </div>
+          {!isNarrow && (
+            <div className="hidden md:flex flex-col items-end">
+               <div className="text-[40px] italic-serif text-on-surface/90">{(tasksCompleted * 10) % 100}%</div>
+               <div className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">Progress</div>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Stats Summary Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className={`grid grid-cols-1 gap-8 ${isNarrow ? '' : 'md:grid-cols-2'}`}>
         {/* Daily Goal Card */}
         <motion.div 
           whileHover={{ y: -4 }}
@@ -102,7 +105,7 @@ export const DashboardScreen = () => {
           <h3 className="text-[10px] uppercase tracking-[0.4em] text-on-surface-variant">Rapid Access</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className={`grid grid-cols-1 gap-6 ${isNarrow ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
             <button 
               onClick={() => setActiveTab('flashcards')}
               className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group"

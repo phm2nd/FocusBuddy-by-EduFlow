@@ -25,7 +25,8 @@ interface Flashcard {
 }
 
 export const FlashcardsScreen = () => {
-  const { streak, setStreak, t } = useUser();
+  const { streak, setStreak, t, mobileOptimized, tabletMode } = useUser();
+  const isNarrow = mobileOptimized || tabletMode;
   const [topic, setTopic] = useState('');
   const [cardCount, setCardCount] = useState(5);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -208,26 +209,26 @@ export const FlashcardsScreen = () => {
           <p className="text-sm text-on-surface-variant font-light px-4">Enter a topic and our AI tutor will create study cards for you.</p>
         </div>
 
-        <div className="w-full max-w-xl flex flex-col gap-4">
-          <div className="flex gap-3">
+        <div className="w-full max-w-xl flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input 
               type="text" 
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               disabled={isGenerating}
               placeholder="e.g. Quantum Entanglement..." 
-              className="flex-1 px-6 md:px-8 h-16 bg-surface-container border border-outline-variant focus:border-primary/50 focus:outline-none rounded-2xl text-xs uppercase tracking-widest text-on-surface transition-all"
+              className="flex-1 px-6 md:px-8 h-14 md:h-16 bg-surface-container border border-outline-variant focus:border-primary/50 focus:outline-none rounded-2xl text-[10px] md:text-xs uppercase tracking-widest text-on-surface transition-all"
             />
             <button 
               onClick={generateFlashcards}
               disabled={isGenerating}
-              className="h-16 px-8 bg-on-surface text-surface rounded-2xl hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center"
+              className="h-14 md:h-16 px-8 bg-on-surface text-surface rounded-2xl hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center shrink-0"
             >
               {isGenerating ? <RefreshCcw className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
              <span className="text-[9px] uppercase tracking-widest text-zinc-600 mr-2">Count:</span>
              {[5, 10, 15, 20].map(n => (
                <button 

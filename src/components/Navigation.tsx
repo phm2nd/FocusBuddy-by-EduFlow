@@ -55,10 +55,11 @@ export const BottomNavBar = ({ activeTab, setActiveTab }: BottomNavBarProps) => 
     { id: 'flashcards', label: 'Study', icon: BrainCircuit },
     { id: 'tutor', label: 'Tutor', icon: Bot },
     { id: 'profile', label: 'User', icon: User },
+    { id: 'settings', label: 'Config', icon: Settings },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-lg border-t border-outline-variant/30 px-2 pt-2 pb-8 md:hidden">
+    <nav className="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-lg border-t border-outline-variant/30 px-2 pt-2 pb-8 xl:hidden">
       <div className="flex justify-around items-center max-w-lg mx-auto">
         {tabs.map((tab) => (
           <NavItem
@@ -131,18 +132,6 @@ export const TopAppBar = ({ activeTab, setActiveTab }: { activeTab: string, setA
         </nav>
 
         <div className="flex items-center gap-4 lg:gap-8 shrink-0">
-          <div className="hidden lg:flex flex-col items-end">
-            <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-600">
-              {user ? t('cloudSynced') : t('offlineMode')}
-            </span>
-            <button 
-              onClick={user ? logout : login}
-              className="text-xs text-on-surface-variant hover:text-primary transition-colors"
-            >
-              {user ? t('logOut') : t('logIn')}
-            </button>
-          </div>
-          
           <div className="relative">
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
@@ -177,6 +166,13 @@ export const TopAppBar = ({ activeTab, setActiveTab }: { activeTab: string, setA
               )}
             </AnimatePresence>
           </div>
+
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border bg-surface-container-low border-outline-variant/30 text-zinc-500 hover:text-on-surface ${activeTab === 'settings' ? 'border-primary text-primary' : ''}`}
+          >
+            <Settings className="w-5 h-5" />
+          </button>
 
           <div 
             onClick={() => setActiveTab('profile')}

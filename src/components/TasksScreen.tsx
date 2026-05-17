@@ -36,7 +36,8 @@ interface Task {
 }
 
 export const TasksScreen = () => {
-  const { tasksCompleted, setTasksCompleted, streak, setStreak, user, t } = useUser();
+  const { tasksCompleted, setTasksCompleted, streak, setStreak, user, t, mobileOptimized, tabletMode } = useUser();
+  const isNarrow = mobileOptimized || tabletMode;
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -161,9 +162,9 @@ export const TasksScreen = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-8">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-8">
         {/* Active Tasks */}
-        <div className="lg:col-span-12 flex flex-col gap-8">
+        <div className="md:col-span-12 flex flex-col gap-8">
            <div className="flex items-center gap-4">
             <span className="text-[9px] font-serif italic text-primary/80">01.</span>
             <div className="h-[1px] flex-1 bg-outline-variant/30" />
@@ -218,7 +219,7 @@ export const TasksScreen = () => {
 
         {/* Completed Section */}
         {completedTasks.length > 0 && (
-          <div className="lg:col-span-12 flex flex-col gap-8 pt-4">
+          <div className="md:col-span-12 flex flex-col gap-8 pt-4">
              <div className="flex items-center gap-4">
               <span className="text-[9px] font-serif italic text-on-surface-variant/30">02.</span>
               <div className="h-[1px] flex-1 bg-outline-variant/20" />
