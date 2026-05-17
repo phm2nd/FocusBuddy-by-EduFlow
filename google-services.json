@@ -12,7 +12,20 @@
           "package_name": "com.phm.focusbuddy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "139329726051-vekk0nsg35508vejjqtm6mjs66mvraa2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.phm.focusbuddy",
+            "certificate_hash": "2760dfa065bf7f9b33a50195f513dd3b72691f1d"
+          }
+        },
+        {
+          "client_id": "139329726051-p166h91q4f1h0fmc2fd59kv1jrqfaktn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAHJjnJY-K3FnWDndUFSJr_eEDmumDJsUk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139329726051-p166h91q4f1h0fmc2fd59kv1jrqfaktn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
