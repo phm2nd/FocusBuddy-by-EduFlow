@@ -14,7 +14,7 @@ import {
 import { useUser } from '../contexts/UserContext';
 
 export const DashboardScreen = () => {
-  const { displayName, streak, tasksCompleted, t } = useUser();
+  const { displayName, streak, tasksCompleted, setActiveTab, t } = useUser();
 
   const firstName = displayName.split(' ')[0];
 
@@ -103,21 +103,30 @@ export const DashboardScreen = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group">
+            <button 
+              onClick={() => setActiveTab('flashcards')}
+              className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group"
+            >
                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
                   <Play className="w-4 h-4 fill-current" />
                </div>
                <h4 className="text-lg italic-serif text-on-surface mb-1">{t('studyFlashcards')}</h4>
                <p className="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant">{t('openSession')}</p>
             </button>
-            <button className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group">
+            <button 
+              onClick={() => setActiveTab('tasks')}
+              className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group"
+            >
                <div className="w-10 h-10 rounded-full bg-zinc-600/10 flex items-center justify-center mb-6 text-zinc-600 group-hover:scale-110 transition-transform">
                   <Plus className="w-4 h-4" />
                </div>
                <h4 className="text-lg italic-serif text-on-surface mb-1">{t('addNewTask')}</h4>
                <p className="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant">{t('quickLabel')}</p>
             </button>
-            <button className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group">
+            <button 
+              onClick={() => setActiveTab('tutor')}
+              className="p-8 bg-surface-container-low border border-outline-variant/30 rounded-3xl text-left hover:bg-surface-container transition-all group"
+            >
                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
                   <BrainCircuit className="w-4 h-4" />
                </div>

@@ -17,17 +17,21 @@ import { useUser } from '../contexts/UserContext';
 import { useTheme } from '../contexts/ThemeContext';
 
 export const ProfileScreen = () => {
-  const { displayName, setDisplayName, emoji, setEmoji, streak, t } = useUser();
+  const { displayName, setDisplayName, emoji, setEmoji, streak, occupation, setOccupation, focus, setFocus, t } = useUser();
   const { theme, setTheme } = useTheme();
   
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(displayName);
+  const [newOccupation, setNewOccupation] = useState(occupation);
+  const [newFocus, setNewFocus] = useState(focus);
   const [isEmojiPicker, setIsEmojiPicker] = useState(false);
 
   const emojis = ['🧠', '🧬', '⚛️', '📚', '🖋️', '🎨', '🚀', '🌟', '⚙️', '🛡️', '⚡', '☕'];
 
   const handleSave = () => {
     setDisplayName(newName);
+    setOccupation(newOccupation);
+    setFocus(newFocus);
     setIsEditing(false);
   };
 
@@ -77,28 +81,55 @@ export const ProfileScreen = () => {
             
             {isEditing ? (
               <div className="w-full space-y-4">
-                <input 
-                  type="text" 
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  className="text-4xl italic-serif text-on-surface bg-transparent border-b border-primary focus:outline-none w-full"
-                />
-                <button onClick={handleSave} className="bg-primary text-on-primary text-[9px] uppercase tracking-widest font-bold px-4 py-2 rounded-md">{t('saveChanges')}</button>
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Display Name</label>
+                  <input 
+                    type="text" 
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="text-4xl italic-serif text-on-surface bg-transparent border-b border-primary/30 focus:border-primary focus:outline-none w-full pb-2"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Occupation</label>
+                    <input 
+                      type="text" 
+                      value={newOccupation}
+                      onChange={(e) => setNewOccupation(e.target.value)}
+                      className="text-sm text-on-surface bg-transparent border-b border-outline-variant/30 focus:border-primary focus:outline-none w-full pb-2"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold">Focus</label>
+                    <input 
+                      type="text" 
+                      value={newFocus}
+                      onChange={(e) => setNewFocus(e.target.value)}
+                      className="text-sm text-on-surface bg-transparent border-b border-outline-variant/30 focus:border-primary focus:outline-none w-full pb-2"
+                    />
+                  </div>
+                </div>
+                <button onClick={handleSave} className="bg-on-surface text-surface text-[9px] uppercase tracking-[0.2em] font-bold px-8 h-12 rounded-sm shadow-xl shadow-on-surface/10 hover:opacity-90 transition-all mt-4">{t('saveChanges')}</button>
               </div>
             ) : (
-              <h3 className="text-5xl italic-serif text-on-surface mb-2 leading-none">{displayName}</h3>
+              <>
+                <h3 className="text-5xl italic-serif text-on-surface mb-2 leading-none">{displayName}</h3>
+                <p className="text-on-surface-variant italic-serif text-lg py-2 mb-8 border-b border-outline-variant/10 w-full">{occupation} · {focus}</p>
+              </>
             )}
             
-            <p className="text-on-surface-variant italic-serif text-lg py-2 mb-8 border-b border-outline-variant/10 w-full">College Student · Computer Science</p>
-            
-            <div className="grid grid-cols-2 gap-8 w-full">
-               <div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-1">{t('yourStatus')}</div>
-                  <div className="text-[10px] uppercase tracking-widest text-on-surface-variant">{t('active')}</div>
+            <div className="grid grid-cols-2 gap-8 w-full mt-auto">
+               <div className="p-6 rounded-2xl bg-surface-container/30 border border-outline-variant/10">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Member Since</div>
+                  <div className="text-sm font-medium text-on-surface-variant">May 2024</div>
                </div>
-               <div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-1">Access</div>
-                  <div className="text-[10px] uppercase tracking-widest text-on-surface-variant">General Access</div>
+               <div className="p-6 rounded-2xl bg-surface-container/30 border border-outline-variant/10">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-600 mb-2">Status</div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    <div className="text-sm font-medium text-on-surface-variant">Premium</div>
+                  </div>
                </div>
             </div>
           </div>

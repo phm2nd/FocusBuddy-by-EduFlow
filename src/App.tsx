@@ -9,10 +9,10 @@ import { FlashcardsScreen } from './components/FlashcardsScreen';
 import { TutorScreen } from './components/TutorScreen';
 import { SettingsScreen } from './components/SettingsScreen';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { UserProvider } from './contexts/UserContext';
+import { UserProvider, useUser } from './contexts/UserContext';
 
 function AppContent() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { activeTab, setActiveTab } = useUser();
   
   const renderScreen = () => {
     switch (activeTab) {

@@ -1,6 +1,6 @@
 {
-  "name": "FocusBuddy by Eduflow",
-  "description": "A modern, minimalist flashcard and study management app designed for focus and retention.",
+  "name": "FocusBuddy",
+  "description": "The ultimate study companion with flashcards, AI tutoring, and deep work tracking.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

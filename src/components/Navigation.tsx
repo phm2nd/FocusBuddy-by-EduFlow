@@ -98,7 +98,7 @@ export const TopAppBar = ({ activeTab, setActiveTab }: { activeTab: string, setA
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 h-24 flex items-center justify-between gap-8">
         <div className="flex items-center gap-6 shrink-0">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase tracking-[0.4em] text-on-surface-variant/70">Eduflow</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] text-on-surface-variant/70">EduFlow</span>
             <h1 className="text-2xl italic-serif text-on-surface tracking-tight leading-none mt-1">FocusBuddy</h1>
           </div>
         </div>

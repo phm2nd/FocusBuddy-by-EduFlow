@@ -34,6 +34,12 @@ interface UserContextType {
   setStreak: (s: number) => void;
   tasksCompleted: number;
   setTasksCompleted: (c: number) => void;
+  occupation: string;
+  setOccupation: (o: string) => void;
+  focus: string;
+  setFocus: (f: string) => void;
+  activeTab: string;
+  setActiveTab: (t: string) => void;
   language: Language;
   setLanguage: (l: Language) => void;
   notificationsEnabled: boolean;
@@ -51,6 +57,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [emoji, setEmoji] = useState('🧠');
   const [streak, setStreak] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
+  const [occupation, setOccupation] = useState('College Student');
+  const [focus, setFocus] = useState('Computer Science');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [language, setLanguage] = useState<Language>(() => {
     return (localStorage.getItem('language') as Language) || 'en';
   });
@@ -75,6 +84,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setEmoji(localStorage.getItem('userEmoji') || '🧠');
         setStreak(parseInt(localStorage.getItem('userStreak') || '0'));
         setTasksCompleted(parseInt(localStorage.getItem('tasksCompleted') || '0'));
+        setOccupation(localStorage.getItem('userOccupation') || 'College Student');
+        setFocus(localStorage.getItem('userFocus') || 'Computer Science');
         setLanguage((localStorage.getItem('language') as Language) || 'en');
         setNotificationsEnabled(localStorage.getItem('notificationsEnabled') !== 'false');
       }
@@ -94,6 +105,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setEmoji(data.emoji || '🧠');
         setStreak(data.streak || 0);
         setTasksCompleted(data.tasksCompleted || 0);
+        setOccupation(data.occupation || 'College Student');
+        setFocus(data.focus || 'Computer Science');
         if (data.language) setLanguage(data.language);
         if (data.notificationsEnabled !== undefined) setNotificationsEnabled(data.notificationsEnabled);
       } else {
@@ -103,6 +116,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           emoji: '🧠',
           streak: 0,
           tasksCompleted: 0,
+          occupation: 'College Student',
+          focus: 'Computer Science',
           language: 'en',
           notificationsEnabled: true,
           updatedAt: new Date().toISOString()
@@ -161,6 +176,20 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateDoc(doc(db, 'users', user.uid), { tasksCompleted, updatedAt: new Date().toISOString() }).catch(() => {});
     }
   }, [tasksCompleted, user]);
+
+  useEffect(() => {
+    localStorage.setItem('userOccupation', occupation);
+    if (user) {
+      updateDoc(doc(db, 'users', user.uid), { occupation, updatedAt: new Date().toISOString() }).catch(() => {});
+    }
+  }, [occupation, user]);
+
+  useEffect(() => {
+    localStorage.setItem('userFocus', focus);
+    if (user) {
+      updateDoc(doc(db, 'users', user.uid), { focus, updatedAt: new Date().toISOString() }).catch(() => {});
+    }
+  }, [focus, user]);
 
   useEffect(() => {
     localStorage.setItem('language', language);
@@ -222,6 +251,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       userPhoto,
       streak, setStreak,
       tasksCompleted, setTasksCompleted,
+      occupation, setOccupation,
+      focus, setFocus,
+      activeTab, setActiveTab,
       language, setLanguage,
       notificationsEnabled, setNotificationsEnabled,
       resetProgress,
