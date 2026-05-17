@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "11238612413",
-    "project_id": "focusbuddy-53958",
-    "storage_bucket": "focusbuddy-53958.firebasestorage.app"
+    "project_number": "139329726051",
+    "project_id": "focusbuddy-92ce6",
+    "storage_bucket": "focusbuddy-92ce6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:11238612413:android:05b184fc3ff8e84b8b46d4",
-        "android_client_info": {
-          "package_name": "com.PHM.FocusBuddy"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBysD-QXnazaUMH2r07O7EHfUOn0DGh-IU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:11238612413:android:28f04cd499c5ef028b46d4",
+        "mobilesdk_app_id": "1:139329726051:android:1e8da018ebef8e5de03a56",
         "android_client_info": {
           "package_name": "com.phm.focusbuddy"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBysD-QXnazaUMH2r07O7EHfUOn0DGh-IU"
+          "current_key": "AIzaSyAHJjnJY-K3FnWDndUFSJr_eEDmumDJsUk"
         }
       ],
       "services": {

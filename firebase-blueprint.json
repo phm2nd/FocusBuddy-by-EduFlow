@@ -9,6 +9,8 @@
         "emoji": { "type": "string" },
         "streak": { "type": "number" },
         "tasksCompleted": { "type": "number" },
+        "occupation": { "type": "string" },
+        "focus": { "type": "string" },
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["displayName", "streak", "tasksCompleted"]
@@ -20,8 +22,9 @@
       "properties": {
         "title": { "type": "string" },
         "category": { "type": "string" },
-        "priority": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
         "status": { "type": "string", "enum": ["pending", "completed"] },
+        "due": { "type": "string" },
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["title", "status"]
